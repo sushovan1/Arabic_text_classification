@@ -16,7 +16,7 @@ from sklearn.preprocessing import LabelEncoder
 import pickle
 import streamlit as st
 
-os.chdir(r'C:\Users\CSU5KOR\OneDrive - Bosch Group\Arabic_classification\Model_directory')
+
 # Function to load the pre-trained model
 @st.cache(allow_output_mutation=True)
 def load_pretrained_model():
