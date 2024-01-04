@@ -41,7 +41,7 @@ def load_pretrained_model():
         st.stop()
 
 # Streamlit App
-st.title("Text Classification App")
+st.title("Text Classification App(تطبيق تصنيف النص)")
 st.write("This app demonstrates text classification using a pre-trained scikit-learn-based machine learning model.")
 # Information about the app
 st.sidebar.title("App Information")
