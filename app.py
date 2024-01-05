@@ -21,17 +21,17 @@ import streamlit as st
 @st.cache(allow_output_mutation=True)
 def load_pretrained_model():
     try:
-       feature_file='tfidf_scorer.pkl'
+       feature_file='Updated_models/tfidf_scorer.pkl'
        with open(feature_file,'rb') as f:
            feature_extractor=pickle.load(f)
        f.close()
        
-       encoder_file='encoder.pkl'
+       encoder_file='Updated_models/encoder.pkl'
        with open(encoder_file,'rb') as f:
            encoder=pickle.load(f)
        f.close()
        
-       model_file='classifier.pkl'
+       model_file='Updated_models/classifier.pkl'
        with open(model_file,'rb') as f:
            model=pickle.load(f)
        f.close()
