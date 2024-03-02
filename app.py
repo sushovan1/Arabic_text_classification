@@ -12,6 +12,8 @@ import nltk
 import  pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
+from transformers import pipeline
+import streamlit.components.v1 as components
 from sklearn.preprocessing import LabelEncoder
 import pickle
 import streamlit as st
@@ -35,14 +37,15 @@ def load_pretrained_model():
        with open(model_file,'rb') as f:
            model=pickle.load(f)
        f.close()
-       return feature_extractor,encoder,model
+       pipe = pipeline("token-classification", model="hatmimoha/arabic-ner",aggregation_strategy='max')
+       return feature_extractor,encoder,model,pipe 
     except FileNotFoundError:
         st.error("Pre-trained model not found. Please make sure the model file exists.")
         st.stop()
 
 # Streamlit App
 st.title("Text Classification App(تطبيق تصنيف النص)")
-st.write("This app demonstrates text classification using a pre-trained scikit-learn-based machine learning model.")
+st.write("This app demonstrates text classification using a pre-trained scikit-learn-based machine learning model and LLMs.")
 # Information about the app
 st.sidebar.title("App Information")
 st.sidebar.info(
@@ -53,7 +56,7 @@ st.sidebar.info(
      Enter text in the provided area, and the model will predict the label."""
 )
 # Load the pre-trained model
-tfidf,encode,trained_model = load_pretrained_model()
+tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
@@ -71,6 +74,14 @@ if user_text:
     predicted_class=encode.inverse_transform(predicted)[0]
     
     st.write(f"Predicted Label: {predicted_class}")
+if st.button("Extract entities"):
+    with st.spinner('Calculating...'):
+        entities=pipeline_obj(user_text)
+        if len(entities)>0:
+            entity_df=pd.DataFrame(entities)
+            st.table(entity_df[["entity_group","word"]])
+        else:
+            st.write("No entities found")
 
 
 
