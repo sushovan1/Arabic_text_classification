@@ -8,6 +8,7 @@ Created on Wed Jan  3 22:53:46 2024
 
 import os
 import numpy as np
+import pandas as pd
 import nltk
 import  pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
