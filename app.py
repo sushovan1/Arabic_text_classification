@@ -76,13 +76,16 @@ if user_text:
     
     st.write(f"Predicted Label: {predicted_class}")
 if st.button("Extract entities"):
-    with st.spinner('Calculating...'):
-        entities=pipeline_obj(user_text)
-        if len(entities)>0:
-            entity_df=pd.DataFrame(entities)
-            st.table(entity_df[["entity_group","word"]])
-        else:
-            st.write("No entities found")
+    try:
+        with st.spinner('Calculating...'):
+            entities=pipeline_obj(user_text)
+            if len(entities)>0:
+                entity_df=pd.DataFrame(entities)
+                st.table(entity_df[["entity_group","word"]])
+            else:
+                st.write("No entities found")
+    except:
+        st.write("Unexpected error occured. Try reducing the text size")
 
 
 
