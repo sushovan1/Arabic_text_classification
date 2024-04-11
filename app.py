@@ -94,9 +94,9 @@ if st.button("Extract entities"):
                 st.write("No entities found")
         try:
             if len(entities)>0:
-                ents=entities[0]
-                ents['score']=float(ents['score'])
-                doc={"input_text":user_text,"predictions":predicted_class,"entities":ents}
+                for ents in entities:
+                    ents['score']=float(ents['score'])
+                doc={"input_text":user_text,"predictions":predicted_class,"entities":entities}
                 pred_collections.insert_one(doc)
             else:
                 pred_collections.insert_one({"input_text":user_text,"predictions":predicted_class,"entities":"No entity found"})
