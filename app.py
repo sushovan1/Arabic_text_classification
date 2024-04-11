@@ -98,8 +98,8 @@ if st.button("Extract entities"):
                 pred_collections.insert_one(doc)
             else:
                 pred_collections.insert_one({"input_text":user_text,"predictions":predicted_class,"entities":"No entity found"})
-        except: 
-            st.write("mongo connection failed")
+        except Exception as e: 
+            st.write(getattr(e, 'message', repr(e)))
             pass
     except:
         st.write("Unexpected error occured. Try reducing the text size")
