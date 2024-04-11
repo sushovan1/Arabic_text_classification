@@ -61,6 +61,8 @@ st.sidebar.info(
 tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
 try:
     client=pymongo.MongoClient("mongodb+srv://sushovanrkm:Dvqe5neOZHCaaY8b@sushovandb.m6o4u83.mongodb.net/")
+    pred_db=client['nlp_preds']
+    pred_collections=pred_db.predictions
 except:
     st.write("mongo connection failed")
     pass
