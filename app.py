@@ -7,6 +7,7 @@ Created on Wed Jan  3 22:53:46 2024
 
 
 import os
+import pymongo
 import numpy as np
 import pandas as pd
 import nltk
@@ -58,6 +59,11 @@ st.sidebar.info(
 )
 # Load the pre-trained model
 tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
+try:
+    client=pymongo.MongoClient("mongodb+srv://sushovanrkm:Dvqe5neOZHCaaY8b@sushovandb.m6o4u83.mongodb.net/")
+except:
+    st.write("mongo connection failed")
+    pass
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
@@ -84,6 +90,17 @@ if st.button("Extract entities"):
                 st.table(entity_df[["entity_group","word"]])
             else:
                 st.write("No entities found")
+        try:
+            if len(entities)>0:
+                ents=entities[0]
+                ents['score']=float(ents['score'])
+                doc={"input_text":user_text,"predictions":predicted_class,"entities":ents}
+                pred_collections.insert_one(doc)
+            else:
+                pred_collections.insert_one({"input_text":user_text,"predictions":predicted_class,"entities":"No entity found"})
+        except: 
+            st.write("mongo connection failed")
+            pass
     except:
         st.write("Unexpected error occured. Try reducing the text size")
 
