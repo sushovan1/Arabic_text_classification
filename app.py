@@ -86,7 +86,7 @@ if st.button("Extract entities"):
             else:
                 st.write("No entities found")
         try:
-            password=st.text_input("Enter password for MongoDB(optional))
+            password=st.text_input("Enter password for MongoDB(optional)")
              if st.button("CONNECT"):
                 connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
                 client=pymongo.MongoClient(connection_string)
