@@ -64,9 +64,9 @@ try:
     if st.sidebar.button("CONNECT"):
         connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
         client=pymongo.MongoClient(connection_string)
-    pred_db=client['nlp_preds']
-    pred_collections=pred_db.predictions
-    st.sidebar.write("connection successful")
+        pred_db=client['nlp_preds']
+        pred_collections=pred_db.predictions
+        st.sidebar.write("connection successful")
 except:
     st.sidebar.write("mongo connection failed")
     pass
