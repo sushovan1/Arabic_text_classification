@@ -85,25 +85,25 @@ if st.button("Extract entities"):
                 st.table(entity_df[["entity_group","word"]])
             else:
                 st.write("No entities found")
-        try:
-            password=st.text_input("Enter password for MongoDB(optional)")
-            if st.button("CONNECT"):
-                connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
-                client=pymongo.MongoClient(connection_string)
-                pred_db=client['nlp_preds']
-                pred_collections=pred_db.predictions
-            if len(entities)>0:
-                for ents in entities:
-                    ents['score']=float(ents['score'])
-                doc={"input_text":user_text,"predictions":predicted_class,"entities":entities}
-                pred_collections.insert_one(doc)
-            else:
-                pred_collections.insert_one({"input_text":user_text,"predictions":predicted_class,"entities":"No entity found"})
-        except Exception as e: 
-            st.write(getattr(e, 'message', repr(e)))
-            pass
     except:
         st.write("Unexpected error occured. Try reducing the text size")
+password=st.text_input("Enter password for MongoDB(optional)")
+try:
+    connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
+    client=pymongo.MongoClient(connection_string)
+    pred_db=client['nlp_preds']
+    pred_collections=pred_db.predictions
+    if len(entities)>0:
+        for ents in entities:
+            ents['score']=float(ents['score'])
+        doc={"input_text":user_text,"predictions":predicted_class,"entities":entities}
+        pred_collections.insert_one(doc)
+    else:
+        pred_collections.insert_one({"input_text":user_text,"predictions":predicted_class,"entities":"No entity found"})
+except Exception as e: 
+    st.write(getattr(e, 'message', repr(e)))
+    pass
+    
 
 
 
