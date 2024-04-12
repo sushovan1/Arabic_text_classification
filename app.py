@@ -66,6 +66,7 @@ try:
         client=pymongo.MongoClient(connection_string)
         pred_db=client['nlp_preds']
         pred_collections=pred_db.predictions
+        st.sidebar.write("connection successful")
 except:
     st.write("mongo connection failed")
     pass
