@@ -59,17 +59,6 @@ st.sidebar.info(
 )
 # Load the pre-trained model
 tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
-password=st.sidebar.text_input("Enter MongoDB Password",value="")
-try:
-    if st.sidebar.button("CONNECT"):
-        connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
-        client=pymongo.MongoClient(connection_string)
-        pred_db=client['nlp_preds']
-        pred_collections=pred_db.predictions
-        st.sidebar.write("connection successful")
-except:
-    st.sidebar.write("mongo connection failed")
-    pass
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
@@ -97,6 +86,12 @@ if st.button("Extract entities"):
             else:
                 st.write("No entities found")
         try:
+            password=st.text_input("Enter password for MongoDB(optional))
+             if st.button("CONNECT"):
+                connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
+                client=pymongo.MongoClient(connection_string)
+                pred_db=client['nlp_preds']
+                pred_collections=pred_db.predictions
             if len(entities)>0:
                 for ents in entities:
                     ents['score']=float(ents['score'])
