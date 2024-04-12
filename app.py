@@ -59,10 +59,13 @@ st.sidebar.info(
 )
 # Load the pre-trained model
 tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
+password=st.sidebar.text_input("Enter MongoDB Password",value="")
 try:
-    client=pymongo.MongoClient("mongodb+srv://sushovanrkm:Dvqe5neOZHCaaY8b@sushovandb.m6o4u83.mongodb.net/")
-    pred_db=client['nlp_preds']
-    pred_collections=pred_db.predictions
+    if st.button("CONNECT):
+        connection_string="mongodb+srv://sushovanrkm:"+password+"@sushovandb.m6o4u83.mongodb.net/"
+        client=pymongo.MongoClient(connection_string)
+        pred_db=client['nlp_preds']
+        pred_collections=pred_db.predictions
 except:
     st.write("mongo connection failed")
     pass
