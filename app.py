@@ -68,7 +68,7 @@ st.sidebar.info(
 
 tfidf,encode,trained_model,pipeline_obj,flag_val = load_pretrained_model()
 if flag_val!=0:
-    st.warning('Can't connect to HuggingFace', icon="⚠️")
+    st.warning("Can't connect to HuggingFace only classification will work", icon="⚠️")
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
