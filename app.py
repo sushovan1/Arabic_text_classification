@@ -23,6 +23,7 @@ import streamlit as st
 # Function to load the pre-trained model
 @st.cache(allow_output_mutation=True)
 def load_pretrained_model():
+    error_counter=0
     try:
        feature_file='Updated_models/tfidf_scorer.pkl'
        with open(feature_file,'rb') as f:
@@ -38,8 +39,15 @@ def load_pretrained_model():
        with open(model_file,'rb') as f:
            model=pickle.load(f)
        f.close()
-       pipe=pipeline("token-classification",model="hatmimoha/arabic-ner",aggregation_strategy='max')
-       return feature_extractor,encoder,model,pipe 
+       try:
+           pipe=pipeline("token-classification",model="hatmimoha/arabic-ner",aggregation_strategy='max')
+       except:
+           error_counter=1
+           pipe=[]
+       if error_counter==0:
+           return feature_extractor,encoder,model,pipe,error_counter
+       else:
+           return feature_extractor,encoder,pipe,error_counter
     except FileNotFoundError:
         st.error("Pre-trained model not found. Please make sure the model file exists.")
         st.stop()
@@ -57,10 +65,10 @@ st.sidebar.info(
      Enter text in the provided area, and the model will predict the label."""
 )
 # Load the pre-trained model
-try:
-    tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
-except:
-    st.write("error loading model files")
+
+tfidf,encode,trained_model,pipeline_obj,flag_val = load_pretrained_model()
+if flag_val!=0:
+    st.warning('Can't connect to HuggingFace', icon="⚠️")
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
