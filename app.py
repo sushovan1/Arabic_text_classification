@@ -57,7 +57,10 @@ st.sidebar.info(
      Enter text in the provided area, and the model will predict the label."""
 )
 # Load the pre-trained model
-tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
+try:
+    tfidf,encode,trained_model,pipeline_obj = load_pretrained_model()
+except:
+    st.write("error loading model files")
 
 # User input for text classification
 user_text = st.text_area("Enter text for classification:")
